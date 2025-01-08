@@ -9,7 +9,7 @@ module Enumerable
 
   def my_select
     arr = []
-    my_each_with_index do |element, index|
+    my_each_with_index do |element|
       arr << element if yield(element)
     end
 
@@ -17,7 +17,7 @@ module Enumerable
   end
 
   def my_all?
-    my_each_with_index do |element, index|
+    my_each_with_index do |element|
       return false unless yield(element)
     end
 
@@ -25,7 +25,7 @@ module Enumerable
   end
 
   def my_any?
-    my_each_with_index do |element, index|
+    my_each_with_index do |element|
       return true if yield(element)
     end
 
@@ -36,8 +36,8 @@ module Enumerable
     my_all? { |element| !block.call(element) }
   end
 
-  def my_count?(&block)
-    my_select { |element| block.call(element) }.size
+  def my_count(&block)
+    my_select { |element| block_given? ? block.call(element) : true }.size
   end
 
   def my_map
@@ -55,10 +55,6 @@ module Enumerable
   end
 end
 
-# You will first have to define my_each
-# on the Array class. Methods defined in
-# your enumerable module will have access
-# to this method
 class Array
   def my_each
     self.size.times do |i|
@@ -67,5 +63,4 @@ class Array
 
     self
   end
-  # Define my_each here
 end
